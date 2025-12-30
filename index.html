@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Galactic Goods Trader - Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2c-1.5 4-4 6.5-7 8 3 1.5 5.5 4 7 8 1.5-4 4-6.5 7-8-3-1.5-5.5-4-7-8z" />
+                        <ellipse cx="12" cy="10" rx="2" ry="3" fill="rgba(255,255,255,0.3)" />
+                        <path d="M9 14c-2 1-3.5 2-4 4 1.5-.5 3-1 4-2z" opacity="0.7" />
+                        <path d="M15 14c2 1 3.5 2 4 4-1.5-.5 3-1 4-2z" opacity="0.7" />
+                    </svg>
+                    <h1>The Galactic Goods Trader</h1>
+                    <span class="demo-badge">DEMO</span>
+                </div>
+                <div class="timer" id="gameTimer">
+                    <div class="timer-icon">⏱️</div>
+                    <div class="timer-value">05:00</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Game Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Kredit Tersedia</div>
+                <div class="stat-value" id="cashBalance">10,000 Cr</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Nilai Kargo</div>
+                <div class="stat-value" id="portfolioValue">0 Cr</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Aset</div>
+                <div class="stat-value highlight" id="netWorth">10,000 Cr</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Peringkat</div>
+                <div class="stat-value rank" id="rank">#-</div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Market Prices -->
+            <div class="panel market-panel">
+                <div class="panel-header">
+                    <h2>Hub Perdagangan - Barang Galaksi</h2>
+                </div>
+                <div class="panel-content" id="marketPrices">
+                    <!-- Asset cards will be inserted here by JS -->
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Portfolio -->
+                <div class="panel portfolio-panel">
+                    <div class="panel-header">
+                        <h2>Manifes Kargo</h2>
+                    </div>
+                    <div class="panel-content" id="portfolio">
+                        <p class="empty-state">Belum ada kargo dimuat</p>
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <div class="panel leaderboard-panel">
+                    <div class="panel-header">
+                        <h2>🏆 Peringkat Galaksi</h2>
+                    </div>
+                    <div class="panel-content" id="leaderboard">
+                        <!-- Leaderboard will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over-overlay" id="gameOverScreen" style="display: none;">
+            <div class="game-over-content">
+                <h1 class="game-over-title">🎮 Permainan Selesai!</h1>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-label">Total Aset Akhir</div>
+                        <div class="final-stat-value" id="finalNetWorth">0 Cr</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-label">Peringkat Anda</div>
+                        <div class="final-stat-value" id="finalRank">#-</div>
+                    </div>
+                </div>
+                <div class="final-leaderboard" id="finalLeaderboard">
+                    <!-- Final leaderboard will be inserted here -->
+                </div>
+                <button class="restart-btn" onclick="restartGame()">🔄 Main Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
