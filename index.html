@@ -4,112 +4,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Galactic Goods Trader - Demo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>The Galactic Goods Trader - Mode Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uplot@1.6.24/dist/uPlot.iife.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uplot@1.6.24/dist/uPlot.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#0f172a',
+                        'bg-card': '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600&family=Orbitron:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #020617;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(215, 28%, 10%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(200, 40%, 20%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(180, 30%, 15%, 1) 0, transparent 50%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #e2e8f0;
+        }
+
+        h1,
+        h2,
+        .font-display {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
 
-<body>
+<body class="min-h-screen text-slate-100 selection:bg-cyan-500/30">
     <!-- Navigation -->
-    <nav class="glass-nav">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <svg class="logo-icon" fill="currentColor" viewBox="0 0 24 24">
+    <nav class="glass-nav sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]" fill="currentColor"
+                        viewBox="0 0 24 24">
                         <path d="M12 2c-1.5 4-4 6.5-7 8 3 1.5 5.5 4 7 8 1.5-4 4-6.5 7-8-3-1.5-5.5-4-7-8z" />
                         <ellipse cx="12" cy="10" rx="2" ry="3" fill="rgba(255,255,255,0.3)" />
                         <path d="M9 14c-2 1-3.5 2-4 4 1.5-.5 3-1 4-2z" opacity="0.7" />
                         <path d="M15 14c2 1 3.5 2 4 4-1.5-.5 3-1 4-2z" opacity="0.7" />
                     </svg>
-                    <h1>The Galactic Goods Trader</h1>
-                    <span class="demo-badge">DEMO</span>
+                    <h1 class="text-xl font-bold">The Galactic Goods Trader</h1>
                 </div>
-                <div class="timer" id="gameTimer">
-                    <div class="timer-icon">⏱️</div>
-                    <div class="timer-value">05:00</div>
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 px-3 py-1 rounded-full text-sm font-bold">
+                        🎮 MODE DEMO
+                    </div>
+                    <button onclick="resetDemo()"
+                        class="px-3 py-1 bg-red-600/80 hover:bg-red-500 text-white rounded text-sm font-semibold transition">
+                        Reset
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
-        <!-- Game Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Kredit Tersedia</div>
-                <div class="stat-value" id="cashBalance">10,000 Cr</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Nilai Kargo</div>
-                <div class="stat-value" id="portfolioValue">0 Cr</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Aset</div>
-                <div class="stat-value highlight" id="netWorth">10,000 Cr</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Peringkat</div>
-                <div class="stat-value rank" id="rank">#-</div>
+    <div class="container mx-auto px-4 py-6">
+        <!-- Info Banner -->
+        <div class="glass-panel mb-6 p-4 rounded-lg bg-blue-500/10 border-blue-500/30 text-blue-300">
+            <div class="flex items-center space-x-3">
+                <div>💡</div>
+                <div>
+                    <div class="font-semibold">Mode Demo</div>
+                    <div class="text-sm opacity-80">Data disimpan di browser Anda. Leaderboard hanya simulasi melawan
+                        bot.</div>
+                </div>
             </div>
         </div>
 
-        <!-- Main Grid -->
-        <div class="main-grid">
-            <!-- Market Prices -->
-            <div class="panel market-panel">
-                <div class="panel-header">
-                    <h2>Hub Perdagangan - Barang Galaksi</h2>
-                </div>
-                <div class="panel-content" id="marketPrices">
-                    <!-- Asset cards will be inserted here by JS -->
+        <!-- Game Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="glass-panel rounded-xl p-5 hover:bg-slate-800/40 transition duration-300">
+                <div class="text-sm text-slate-400 mb-1">Kredit Tersedia</div>
+                <div id="cashBalance" class="text-2xl font-bold text-cyan-400">10,000 Cr</div>
+            </div>
+            <div class="glass-panel rounded-xl p-5 hover:bg-slate-800/40 transition duration-300">
+                <div class="text-sm text-slate-400 mb-1">Nilai Kargo</div>
+                <div id="portfolioValue" class="text-2xl font-bold text-blue-400">0 Cr</div>
+            </div>
+            <div class="glass-panel rounded-xl p-5 hover:bg-slate-800/40 transition duration-300">
+                <div class="text-sm text-slate-400 mb-1">Total Nilai Aset</div>
+                <div id="netWorth" class="text-2xl font-bold text-purple-400">10,000 Cr</div>
+            </div>
+        </div>
+
+        <!-- Market Prices & Trading -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Trading Hub -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <div class="p-4 border-b border-white/10 bg-black/20">
+                        <h2 class="text-lg font-bold">Hub Perdagangan - Barang Tersedia</h2>
+                    </div>
+                    <div id="marketPrices" class="divide-y divide-slate-700">
+                        <!-- Price cards will be inserted here -->
+                    </div>
                 </div>
             </div>
 
             <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Portfolio -->
-                <div class="panel portfolio-panel">
-                    <div class="panel-header">
-                        <h2>Manifes Kargo</h2>
+            <div class="space-y-6">
+                <!-- Leaderboard -->
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <div class="p-4 border-b border-white/10 bg-black/20">
+                        <h2 class="text-lg font-bold">🏆 Papan Peringkat</h2>
                     </div>
-                    <div class="panel-content" id="portfolio">
-                        <p class="empty-state">Belum ada kargo dimuat</p>
+                    <div id="leaderboard" class="p-4">
+                        <!-- Leaderboard will be rendered here -->
                     </div>
                 </div>
 
-                <!-- Leaderboard -->
-                <div class="panel leaderboard-panel">
-                    <div class="panel-header">
-                        <h2>🏆 Peringkat Galaksi</h2>
+                <!-- Cargo Manifest -->
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <div class="p-4 border-b border-white/10 bg-black/20">
+                        <h2 class="text-lg font-bold">Manifes Kargo Anda</h2>
                     </div>
-                    <div class="panel-content" id="leaderboard">
-                        <!-- Leaderboard will be inserted here -->
+                    <div id="portfolio" class="p-4">
+                        <p class="text-slate-400 text-sm text-center py-8">Belum ada kargo dimuat</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Game Over Screen -->
-        <div class="game-over-overlay" id="gameOverScreen" style="display: none;">
-            <div class="game-over-content">
-                <h1 class="game-over-title">🎮 Permainan Selesai!</h1>
-                <div class="final-stats">
-                    <div class="final-stat">
-                        <div class="final-stat-label">Total Aset Akhir</div>
-                        <div class="final-stat-value" id="finalNetWorth">0 Cr</div>
-                    </div>
-                    <div class="final-stat">
-                        <div class="final-stat-label">Peringkat Anda</div>
-                        <div class="final-stat-value" id="finalRank">#-</div>
+        <!-- Price Charts -->
+        <div class="mt-6">
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-black/20">
+                    <h2 class="text-lg font-bold">📈 Grafik Harga Real-Time</h2>
+                </div>
+                <div class="p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm font-semibold text-slate-300 mb-2">PLASMA</div>
+                            <div id="chart-PLASMA" class="w-full" style="height: 150px;"></div>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-300 mb-2">ORE</div>
+                            <div id="chart-ORE" class="w-full" style="height: 150px;"></div>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-300 mb-2">SPICE</div>
+                            <div id="chart-SPICE" class="w-full" style="height: 150px;"></div>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-slate-300 mb-2">CRYSTAL</div>
+                            <div id="chart-CRYSTAL" class="w-full" style="height: 150px;"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="final-leaderboard" id="finalLeaderboard">
-                    <!-- Final leaderboard will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="mt-6">
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-black/20">
+                    <h2 class="text-lg font-bold">Log Aktivitas</h2>
                 </div>
-                <button class="restart-btn" onclick="restartGame()">🔄 Main Lagi</button>
+                <div id="activityLog" class="p-4 max-h-64 overflow-y-auto font-mono text-xs text-slate-400">
+                    <!-- Activities will appear here -->
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Trading Modal -->
+    <div id="tradingModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="glass-panel rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 id="modalTitle" class="text-2xl font-bold mb-4">Trading</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-slate-400 block mb-2">Resource</label>
+                    <input id="modalResource" type="text" readonly
+                        class="w-full px-4 py-2 bg-slate-800 rounded text-white font-bold" />
+                </div>
+                <div>
+                    <label class="text-sm text-slate-400 block mb-2">Harga Saat Ini</label>
+                    <input id="modalPrice" type="text" readonly
+                        class="w-full px-4 py-2 bg-slate-800 rounded text-cyan-300 font-bold" />
+                </div>
+                <div>
+                    <label class="text-sm text-slate-400 block mb-2">Jumlah</label>
+                    <input id="modalQuantity" type="number" min="1" step="1" value="10"
+                        class="w-full px-4 py-2 bg-slate-800 rounded text-white" oninput="updateTotalCost()" />
+                </div>
+                <div id="totalCostSection">
+                    <label class="text-sm text-slate-400 block mb-2">Total</label>
+                    <div id="modalTotalCost"
+                        class="w-full px-4 py-3 bg-slate-900 rounded text-yellow-300 font-bold text-lg border border-yellow-500/30">
+                        0 Cr</div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button onclick="executeTrade()"
+                        class="flex-1 px-4 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded font-bold">Konfirmasi</button>
+                    <button onclick="closeModal()"
+                        class="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded font-bold">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="game.js"></script>
 </body>
